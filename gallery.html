@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel</title>
+    <style> 
+    body {
+        font-family: sans-serif;
+        margin: 0;
+        background-color: #f0f0f0; /* Light gray background */
+        color: #333; /* Dark gray text color */
+    }
+
+    .container {
+        width: 1000px;
+        max-width: 1000px;
+        margin: 20px auto;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        border-radius: 10px; /* Rounded corners */
+    }
+
+    header {
+        background-color: #921618; /* Purple header */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+        border-radius: 8px 8px 0 0; /* Round top corners */
+    }
+        .carousel {
+            width: 1000px; /* Adjust as needed */
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 1.5s ease-in-out; /* Smooth transition */
+        }
+
+        .carousel-item {
+            min-width: 100%; /* Each image takes full width */
+            flex-shrink: 5; /* Prevent images from shrinking */
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            display: block; /* Prevents small space below image */
+        }
+
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px 15px;
+            cursor: pointer;
+            border: none;
+            z-index: 1; /* Ensure controls are on top */
+        }
+
+        .carousel-control-prev {
+            left: 10px;
+        }
+
+        .carousel-control-next {
+            right: 10px;
+        }
+
+        /* Optional: Add some styling for indicators */
+        .carousel-indicators {
+          position: absolute;
+          bottom: 10px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+        }
+
+        .carousel-indicator {
+          width: 5px;
+          height: 10px;
+          margin: 0 5px;
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 50%;
+          cursor: pointer;
+          border: none;
+        }
+
+        .carousel-indicator.active {
+          background-color: white;
+        }
+        .exit-button {
+      background-color: red;
+      color: white;
+      text-decoration: none;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      position: fixed; 
+      top: 10px; 
+      left: 10px; /* Positions the button in the top-right corner */
+          }
+       
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+      <a href="index.html" class="exit-button">Exit</a>
+        <header>
+          <h1>Princess Llanos</h1>
+        </header>
+    <div class="content">
+
+    <div class="carousel">
+      <center>
+      <h2>Gallery</h2>
+    </center>
+        <div class="carousel-inner" id="carouselInner">
+            <div class="carousel-item">
+                <img src="pic1.jpg" alt="Image 1">
+            </div>
+            <div class="carousel-item">
+                <img src="pic2.jpg" alt="Image 2">
+            </div>
+            <div class="carousel-item">
+                <img src="pic3.jpg" alt="Image 3">
+            </div>
+            <div class="carousel-item">
+                <img src="pic4.jpg" alt="Image 4">
+            </div>
+            <div class="carousel-item">
+                <img src="pic5.jpg" alt="Image 5">
+            </div>
+            <div class="carousel-item">
+                <img src="pic6.jpg" alt="Image 6">
+            </div>
+            <div class="carousel-item">
+                <img src="pic7.JPG" alt="Image 7">
+            </div>
+            <div class="carousel-item">
+                <img src="pic8.JPG" alt="Image 8">
+            </div>
+            <div class="carousel-item">
+                <img src="pic9.jpg" alt="Image 9">
+            </div>
+            <div class="carousel-item">
+                <img src="pic10.jpg" alt="Image 10">
+            </div>
+
+        </div>
+
+        <button class="carousel-control carousel-control-prev" onclick="prevSlide()">Previous</button>
+        <button class="carousel-control carousel-control-next" onclick="nextSlide()">Next</button>
+
+        <div class="carousel-indicators" id="carouselIndicators">
+        </div>
+        
+
+    </div>
+
+    <script>
+        const carouselInner = document.getElementById('carouselInner');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const carouselIndicators = document.getElementById('carouselIndicators');
+        let currentSlide = 0;
+
+        // Create indicators
+        for (let i = 0; i < carouselItems.length; i++) {
+            const indicator = document.createElement('button');
+            indicator.classList.add('carousel-indicator');
+            indicator.addEventListener('click', () => goToSlide(i));
+            carouselIndicators.appendChild(indicator);
+        }
+
+        const indicators = document.querySelectorAll('.carousel-indicator');
+        indicators[0].classList.add('active'); // Activate the first indicator
+
+        function showSlide(n) {
+  carouselInner.style.transform = `translateX(-${n * 100}%)`; 
+
+  // Update active indicator
+  indicators.forEach(indicator => indicator.classList.remove('active'));
+  indicators[n].classList.add('active');
+}
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % carouselItems.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + carouselItems.length) % carouselItems.length; // Handle negative indices
+            showSlide(currentSlide);
+        }
+
+        function goToSlide(n) {
+          currentSlide = n;
+          showSlide(currentSlide);
+        }
+
+
+        // Optional: Auto slide (you can uncomment this if you want auto sliding)
+        // setInterval(nextSlide, 3000); // Change 3000 to adjust interval (3 seconds)
+
+    </script>
+    <div>
+
+    
+      <div style="background-color:#7c1313;text-align:center;padding:30px;">© 2024 - 2025 ITP4 | All Right Reserved</div>
+</div>
+
+</body>
+</html>
